@@ -1,1 +1,117 @@
+//BASIC_HEX_PRINT
+byte myByte=0x00;
+int dt=1500; 
+void setup() {
+  // put your setup code here, to run once:
+Serial.begin(9600);
+}
 
+void loop() {
+  // put your main code here, to run repeatedly:
+Serial.println(myByte,HEX);
+myByte=myByte+1;
+delay(dt);
+}
+
+
+//CONTROL_LED_WITH_IC
+int latchPin=11;
+int clockPin=9;
+int dataPin=12;
+byte LEDs=0B01010101;
+
+void setup() {
+  // put your setup code here, to run once:
+pinMode(latchPin,OUTPUT);
+pinMode(clockPin,OUTPUT);
+pinMode(dataPin,OUTPUT);
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+digitalWrite(latchPin,LOW);
+shiftOut(dataPin,clockPin,LSBFIRST,LEDs);
+digitalWrite(latchPin,HIGH);
+}
+
+
+//BASIC_CONTROL_LED_WITH_ALTERNATIVE
+int clockPin=9;
+int latchPin=11;
+int dataPin=12;
+byte LEDs=0B01010101;
+byte LED1s=0B10101010;
+int dt=250;
+void setup() {
+  // put your setup code here, to run once:
+pinMode(latchPin,OUTPUT);
+pinMode(clockPin,OUTPUT);
+pinMode(dataPin,OUTPUT);
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+digitalWrite(latchPin,LOW);
+shiftOut(dataPin,clockPin,LSBFIRST,LEDs);
+digitalWrite(latchPin,HIGH);
+delay(dt);
+
+digitalWrite(latchPin,LOW);
+shiftOut(dataPin,clockPin,LSBFIRST,LED1s);
+digitalWrite(latchPin,HIGH);
+delay(dt);
+}
+
+
+//BINARY_COUNTER_WITH_IC
+int latchPin=11;
+int clockPin=9;
+int dataPin=12;
+int dt=1500;
+byte LEDs=0b00001111;
+void setup() {
+  // put your setup code here, to run once:
+Serial.begin(9600);
+pinMode(latchPin,OUTPUT);
+pinMode(clockPin,OUTPUT);
+pinMode(dataPin,OUTPUT);
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+digitalWrite(latchPin,LOW);
+shiftOut(dataPin,clockPin,LSBFIRST,LEDs);
+digitalWrite(latchPin,HIGH);
+
+Serial.println(LEDs,BIN);
+LEDs=LEDs+11;
+delay(dt);
+}
+
+
+//74HC595_BINARY_BIT_FLIPPER
+int clockPin=9;
+int latchPin=11;
+int dataPin=12;
+byte LEDs=0x0f;
+byte LEDsFlipped;
+int dt=250;
+void setup() {
+  // put your setup code here, to run once:
+pinMode(latchPin,OUTPUT);
+pinMode(clockPin,OUTPUT);
+pinMode(dataPin,OUTPUT);
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+digitalWrite(latchPin,LOW);
+shiftOut(dataPin,clockPin,LSBFIRST,LEDs);
+digitalWrite(latchPin,HIGH);
+delay(dt);
+LEDsFlipped=255-LEDs;
+digitalWrite(latchPin,LOW);
+shiftOut(dataPin,clockPin,LSBFIRST,LEDsFlipped);
+digitalWrite(latchPin,HIGH);
+delay(dt);
+}
